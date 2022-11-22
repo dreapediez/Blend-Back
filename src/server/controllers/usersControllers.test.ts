@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import CustomError from "../../CustomError/CustomError.js";
 import { userMockCredentials } from "../../mocks/userMocks.js";
 import registerUser from "./usersControllers.js";
-import User from "../../mongodb/models/User.js";
+import User from "../../database/models/User.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
