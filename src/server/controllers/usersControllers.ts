@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import User from "../../mongodb/models/User.js";
+import User from "../../database/models/User.js";
 import CustomError from "../../CustomError/CustomError.js";
 import type { RegisterData } from "../types/userTypes.js";
 import type { MongooseError } from "mongoose";

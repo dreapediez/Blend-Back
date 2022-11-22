@@ -33,7 +33,7 @@ module.exports = {
       },
     },
     {
-      files: ["./src/mongodb/*.ts"],
+      files: ["./src/database/*.ts"],
       rules: {
         "@typescript-eslint/no-unsafe-return": "off",
       },

@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 const debug = debugCreator("users:databasemongodb:root");
 
-const connectMongodb = async (mongoUrl: string) => {
+const connectDatabase = async (mongoUrl: string) => {
   try {
     await mongoose.connect(mongoUrl, { dbName: "blend" });
     debug(chalk.blue("Connected to database"));
@@ -24,4 +24,4 @@ const connectMongodb = async (mongoUrl: string) => {
   });
 };
 
-export default connectMongodb;
+export default connectDatabase;

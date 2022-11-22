@@ -3,15 +3,15 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import app from "../app.js";
-import User from "../../mongodb/models/User.js";
-import connectMongodb from "../../mongodb/index.js";
+import User from "../../database/models/User.js";
+import connectDatabase from "../../database/index.js";
 import type { RegisterData } from "../types/userTypes.js";
 
 let server: MongoMemoryServer;
 
 beforeAll(async () => {
   server = await MongoMemoryServer.create();
-  await connectMongodb(server.getUri());
+  await connectDatabase(server.getUri());
 });
 
 afterEach(async () => {
