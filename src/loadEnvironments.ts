@@ -9,6 +9,7 @@ const {
   SUPABASE_URL: supabaseUrl,
   SUPABASE_KEY: supabasekey,
   SUPABASE_STORAGE_NAME: supabaseStorageName,
+  ALLOWED_ORIGINS: allowedOrigins,
 } = process.env;
 
 interface Environments {
@@ -24,6 +25,7 @@ interface Environments {
     key: string;
     storageName: string;
   };
+  allowedOrigins: string[];
 }
 
 const environments: Environments = {
@@ -39,6 +41,7 @@ const environments: Environments = {
     key: supabasekey,
     storageName: supabaseStorageName,
   },
+  allowedOrigins: allowedOrigins?.split(",") ?? [],
 };
 
 export default environments;
