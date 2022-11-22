@@ -1,3 +1,4 @@
+import "../loadEnvironments.js";
 import chalk from "chalk";
 import debugCreator from "debug";
 import mongoose from "mongoose";
