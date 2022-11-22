@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../../mongodb/models/User.js";
 import CustomError from "../../CustomError/CustomError.js";
 import type { RegisterData } from "../types/userTypes.js";
+import type { MongooseError } from "mongoose";
 
 const registerUser = async (
   req: Request,
@@ -22,6 +23,16 @@ const registerUser = async (
 
     res.status(201).json({ user: { id: newUser._id, username, email } });
   } catch (error: unknown) {
+    if ((error as MongooseError).message.includes("duplicate key")) {
+      const customError = new CustomError(
+        "The user already exists",
+        409,
+        "The user already exists"
+      );
+      next(customError);
+      return;
+    }
+
     const customError = new CustomError(
       (error as Error).message,
       (error as CustomError).statusCode ?? 500,
