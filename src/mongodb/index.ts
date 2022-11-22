@@ -3,9 +3,9 @@ import chalk from "chalk";
 import debugCreator from "debug";
 import mongoose from "mongoose";
 
-const debug = debugCreator("users:database:root");
+const debug = debugCreator("users:databasemongodb:root");
 
-const connectDatabase = async (mongoUrl: string) => {
+const connectMongodb = async (mongoUrl: string) => {
   try {
     await mongoose.connect(mongoUrl, { dbName: "blend" });
     debug(chalk.blue("Connected to database"));
@@ -19,10 +19,9 @@ const connectDatabase = async (mongoUrl: string) => {
       delete ret._id;
       delete ret.__v;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return ret;
     },
   });
 };
 
-export default connectDatabase;
+export default connectMongodb;
