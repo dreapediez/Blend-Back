@@ -45,11 +45,13 @@ describe("Given a registerUser Controller", () => {
 
   describe("When it receives a request and there is an error", () => {
     test("Then it should call next with a custom Error", async () => {
-      User.create = jest.fn().mockRejectedValue(new CustomError("", 500, ""));
+      const error = new CustomError("", 500, "Something went wrong");
+
+      User.create = jest.fn().mockRejectedValue(new Error(""));
 
       await registerUser(req as Request, res as Response, next as NextFunction);
 
-      expect(next).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
