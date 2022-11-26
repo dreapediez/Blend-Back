@@ -6,8 +6,10 @@ import app from "../app.js";
 import User from "../../database/models/User.js";
 import connectDatabase from "../../database/index.js";
 import type { RegisterData } from "../types/userTypes.js";
+import routes from "./routes.js";
 
 let server: MongoMemoryServer;
+const { registerRoute, usersRoute } = routes;
 
 beforeAll(async () => {
   server = await MongoMemoryServer.create();
@@ -23,21 +25,21 @@ afterAll(async () => {
   await server.stop();
 });
 
-const userPassword = "leo123";
+const userPassword = "leo12345678";
 
 describe("Given a POST /users/register endpoint", () => {
-  describe("When it recevies a new user request with a username 'Leo', a password 'leo123' and an email 'leo@gmail.com'", () => {
+  describe("When it recevies a new user request with a username 'Leonidas', a password 'leo123' and an email 'leo@gmail.com'", () => {
     test("Then it should respond with a code status 201 and an encrypted password", async () => {
       const expectedStatus = 201;
 
       const userData = {
-        username: "Leo",
+        username: "Leonidas",
         password: userPassword,
         email: "leo@gmail.com",
       };
 
       await request(app)
-        .post("/users/register")
+        .post(`${usersRoute}${registerRoute}`)
         .send(userData)
         .expect(expectedStatus);
     });
@@ -48,7 +50,7 @@ describe("Given a POST /users/register endpoint", () => {
     beforeEach(async () => {
       const hashedPassword = await bcrypt.hash(userPassword, 10);
       userData = {
-        username: "Leo",
+        username: "Leonidas",
         password: hashedPassword,
         email: "leo@gmail.com",
       };
@@ -58,13 +60,13 @@ describe("Given a POST /users/register endpoint", () => {
     test("Then it sould return a response with status 409", async () => {
       const conflictStatus = 409;
       const newUserData: RegisterData = {
-        username: "Leo",
+        username: "Leonidas",
         password: userPassword,
         email: "leonidas@gmail.com",
       };
 
       await request(app)
-        .post("/users/register")
+        .post(`${usersRoute}${registerRoute}`)
         .send(newUserData)
         .expect(conflictStatus);
     });
