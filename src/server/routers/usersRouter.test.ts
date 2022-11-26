@@ -71,6 +71,22 @@ describe("Given a POST /users/register endpoint", () => {
         .expect(conflictStatus);
     });
   });
+
+  describe("When it receives an empty request", () => {
+    test("Then it should respond with a code status 400", async () => {
+      const expectedStatus = 400;
+      const emptyData = {
+        username: "",
+        email: "",
+        password: "",
+      };
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(emptyData)
+        .expect(expectedStatus);
+    });
+  });
 });
 
 describe("Given a POST /users/login endpoint", () => {
@@ -131,6 +147,21 @@ describe("Given a POST /users/login endpoint", () => {
       await request(app)
         .post(`${usersRoute}${loginRoute}`)
         .send(wrognUserLogin)
+        .expect(expectedStatus);
+    });
+  });
+
+  describe("When it receives an empty request", () => {
+    test("Then it should respond with a code status 400", async () => {
+      const expectedStatus = 400;
+      const emptyData: UserCredentials = {
+        username: "",
+        password: "",
+      };
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(emptyData)
         .expect(expectedStatus);
     });
   });
