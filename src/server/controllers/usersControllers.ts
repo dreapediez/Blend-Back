@@ -58,7 +58,7 @@ export const loginUser = async (
     const user = await User.findOne({ username });
 
     if (!user) {
-      const error = new CustomError("No data found", 404, "No data found");
+      const error = new CustomError("User not found", 401, "Wrong credentials");
 
       next(error);
       return;

@@ -67,8 +67,6 @@ describe("Given a registerUser Controller", () => {
 });
 
 describe("Given a loginUser Controller", () => {
-  const newCustomError = new CustomError("No data found", 401, "No data found");
-
   describe("When it receives a request with a username 'leo' and password 'leo123' that are in the database", () => {
     test("Then it should respond with status 200, and the json method with the token", async () => {
       const expectedStatus = 200;
@@ -87,7 +85,13 @@ describe("Given a loginUser Controller", () => {
   });
 
   describe("When it receives username 'leo' that is not in the database", () => {
-    test("Then it should call next with a Custom Error with public message 'Wrong credentials' and response status 401", async () => {
+    test("Then it should call next with a Custom Error with public message 'Wrong credentials' and response status 404", async () => {
+      const newCustomError = new CustomError(
+        "User not found",
+        404,
+        "User not found"
+      );
+
       User.findOne = jest.fn().mockReturnValue(null);
 
       await loginUser(req as Request, res as Response, next as NextFunction);
@@ -98,6 +102,12 @@ describe("Given a loginUser Controller", () => {
 
   describe("When it receives a request with an empty body", () => {
     test("Then it should call next with a Custom Error with public message 'Wrong credentials' and response status 401", async () => {
+      const newCustomError = new CustomError(
+        "User not found",
+        401,
+        "User not found"
+      );
+
       User.findOne = jest.fn().mockReturnValue(null);
 
       const req: Partial<Request> = {

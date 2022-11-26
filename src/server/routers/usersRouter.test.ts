@@ -5,11 +5,11 @@ import bcrypt from "bcryptjs";
 import app from "../app.js";
 import User from "../../database/models/User.js";
 import connectDatabase from "../../database/index.js";
-import type { RegisterData } from "../types/userTypes.js";
+import type { RegisterData, UserCredentials } from "../types/userTypes.js";
 import routes from "./routes.js";
 
 let server: MongoMemoryServer;
-const { registerRoute, usersRoute } = routes;
+const { registerRoute, loginRoute, usersRoute } = routes;
 
 beforeAll(async () => {
   server = await MongoMemoryServer.create();
@@ -28,7 +28,7 @@ afterAll(async () => {
 const userPassword = "leo12345678";
 
 describe("Given a POST /users/register endpoint", () => {
-  describe("When it recevies a new user request with a username 'Leonidas', a password 'leo123' and an email 'leo@gmail.com'", () => {
+  describe("When it recevies a new user request with a username 'Leonidas', a password 'leo12345678' and an email 'leo@gmail.com'", () => {
     test("Then it should respond with a code status 201 and an encrypted password", async () => {
       const expectedStatus = 201;
 
@@ -69,6 +69,69 @@ describe("Given a POST /users/register endpoint", () => {
         .post(`${usersRoute}${registerRoute}`)
         .send(newUserData)
         .expect(conflictStatus);
+    });
+  });
+});
+
+describe("Given a POST /users/login endpoint", () => {
+  beforeEach(async () => {
+    const hashedPassword = await bcrypt.hash(userPassword, 10);
+
+    const userData: RegisterData = {
+      username: "Leonidas",
+      password: hashedPassword,
+      email: "leonidas@gmail.com",
+    };
+
+    await User.create(userData);
+  });
+
+  describe("When it receives an existent user request with a username 'Leonidas' and password 'leo12345678'", () => {
+    test("Then it should respond with a code status 200 and their corresponding token", async () => {
+      const expectedStatus = 200;
+      const userLogin: UserCredentials = {
+        username: "Leonidas",
+        password: userPassword,
+      };
+
+      const userToken = "accessToken";
+
+      const response = await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(userLogin)
+        .expect(expectedStatus);
+
+      expect(response.body).toHaveProperty(userToken);
+    });
+  });
+
+  describe("When it receives an exitent user request with a username 'Leonidas' with a wrong password 'ups'", () => {
+    test("Then it should respond with a code status 400", async () => {
+      const expectedStatus = 400;
+      const wrognUserLogin: UserCredentials = {
+        username: "Leonidas",
+        password: "ups",
+      };
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(wrognUserLogin)
+        .expect(expectedStatus);
+    });
+  });
+
+  describe("When it receives an unexistent user request with a username 'Jerjes' and password 'jerjes123'", () => {
+    test("Then it should respond with a code status 401", async () => {
+      const expectedStatus = 401;
+      const wrognUserLogin: UserCredentials = {
+        username: "Jerjes",
+        password: "jerjes123",
+      };
+
+      await request(app)
+        .post(`${usersRoute}${loginRoute}`)
+        .send(wrognUserLogin)
+        .expect(expectedStatus);
     });
   });
 });
