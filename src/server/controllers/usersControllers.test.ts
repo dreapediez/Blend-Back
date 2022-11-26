@@ -2,8 +2,8 @@ import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import CustomError from "../../CustomError/CustomError.js";
 import { userMockCredentials } from "../../mocks/userMocks.js";
-import registerUser from "./usersControllers.js";
 import User from "../../database/models/User.js";
+import { registerUser } from "./usersControllers.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
