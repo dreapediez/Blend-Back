@@ -119,4 +119,34 @@ describe("Given a loginUser Controller", () => {
       expect(next).toHaveBeenCalledWith(newCustomError);
     });
   });
+
+  describe("When it receives a request with a wrong password", () => {
+    test("Then it should call next with a Custom Error with public message 'Password is incorrect' and response status 401", async () => {
+      const newCustomError = new CustomError(
+        "Password is incorrect",
+        401,
+        "Wrong credentials"
+      );
+
+      User.findOne = jest.fn().mockReturnValue(userMockWithId);
+      bcrypt.compare = jest.fn().mockResolvedValueOnce(false);
+
+      await loginUser(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalledWith(newCustomError);
+    });
+  });
+
+  describe("When it receives a request with a wrong password", () => {
+    test("Then it should call next with a Custom Error with public message 'Password is incorrect' and response status 401", async () => {
+      const newCustomError = new CustomError("", 500, "Something went wrong");
+
+      User.findOne = jest.fn().mockReturnValue(userMockWithId);
+      bcrypt.compare = jest.fn().mockRejectedValue(new Error());
+
+      await loginUser(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalledWith(newCustomError);
+    });
+  });
 });
