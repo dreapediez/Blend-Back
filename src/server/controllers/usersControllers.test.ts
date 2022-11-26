@@ -1,9 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import CustomError from "../../CustomError/CustomError.js";
-import { userMockCredentials } from "../../mocks/userMocks.js";
+import {
+  userMock,
+  userMockCredentials,
+  userMockWithId,
+} from "../../mocks/userMocks.js";
 import User from "../../database/models/User.js";
-import { registerUser } from "./usersControllers.js";
+import { loginUser, registerUser } from "./usersControllers.js";
+import environments from "../../loadEnvironments.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -15,6 +21,10 @@ const res: Partial<Response> = {
 };
 
 const next = jest.fn().mockReturnThis();
+
+const req: Partial<Request> = {
+  body: userMock,
+};
 
 describe("Given a registerUser Controller", () => {
   const req: Partial<Request> = {
@@ -52,6 +62,51 @@ describe("Given a registerUser Controller", () => {
       await registerUser(req as Request, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+});
+
+describe("Given a loginUser Controller", () => {
+  const newCustomError = new CustomError("No data found", 401, "No data found");
+
+  describe("When it receives a request with a username 'leo' and password 'leo123' that are in the database", () => {
+    test("Then it should respond with status 200, and the json method with the token", async () => {
+      const expectedStatus = 200;
+
+      const token = jwt.sign(userMockWithId, environments.secret);
+
+      User.findOne = jest.fn().mockReturnValue(userMockWithId);
+      bcrypt.compare = jest.fn().mockResolvedValueOnce(true);
+      jwt.sign = jest.fn().mockReturnValueOnce(token);
+
+      await loginUser(req as Request, res as Response, null);
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+      expect(res.json).toHaveBeenCalledWith({ accessToken: token });
+    });
+  });
+
+  describe("When it receives username 'leo' that is not in the database", () => {
+    test("Then it should call next with a Custom Error with public message 'Wrong credentials' and response status 401", async () => {
+      User.findOne = jest.fn().mockReturnValue(null);
+
+      await loginUser(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalledWith(newCustomError);
+    });
+  });
+
+  describe("When it receives a request with an empty body", () => {
+    test("Then it should call next with a Custom Error with public message 'Wrong credentials' and response status 401", async () => {
+      User.findOne = jest.fn().mockReturnValue(null);
+
+      const req: Partial<Request> = {
+        body: {},
+      };
+
+      await loginUser(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalledWith(newCustomError);
     });
   });
 });
