@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { ValidationError } from "express-validation";
 import type CustomError from "../../../CustomError/CustomError";
 
 export const notFoundEndpoint = (req: Request, res: Response) => {
@@ -12,6 +13,14 @@ export const generalError = (
   // eslint-disable-next-line no-unused-vars
   next: NextFunction
 ) => {
+  if (error instanceof ValidationError) {
+    const schemErrors = error.details.body.map(
+      (schemError) => schemError.message
+    );
+    error.message = schemErrors.join(", ");
+    error.publicMessage = schemErrors.join(", ");
+  }
+
   const statusCode = error.statusCode ?? 500;
   const message =
     error.publicMessage || "Ops, something went wrong, try again later";
