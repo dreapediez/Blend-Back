@@ -72,19 +72,21 @@ describe("Given a POST /users/register endpoint", () => {
     });
   });
 
-  describe("When it receives an empty request", () => {
-    test("Then it should respond with a code status 400", async () => {
+  describe("When it receives a request with username: 'Leo', password: '123', email: leo@o.com that is not on the database", () => {
+    test("Then it should respond with a code status 400 and the message: 'Bad request'", async () => {
       const expectedStatus = 400;
       const emptyData = {
-        username: "",
-        email: "",
-        password: "",
+        username: "Leo",
+        email: "leo@o.com",
+        password: "123",
       };
 
-      await request(app)
-        .post(`${usersRoute}${loginRoute}`)
+      const response = await request(app)
+        .post(`${usersRoute}${registerRoute}`)
         .send(emptyData)
         .expect(expectedStatus);
+
+      expect(response.status).toStrictEqual(expectedStatus);
     });
   });
 });
