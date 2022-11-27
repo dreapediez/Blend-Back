@@ -4,6 +4,7 @@ import express from "express";
 import morgan from "morgan";
 import usersRouter from "./routers/usersRouter.js";
 import allowedOrigins from "./allowedOrigins/allowedOrigins.js";
+import { generalError } from "./middlewares/errors/errors.js";
 
 const app = express();
 
@@ -27,5 +28,7 @@ app.get("/", (req, res, next) => {
 
   next();
 });
+
+app.use(generalError);
 
 export default app;
