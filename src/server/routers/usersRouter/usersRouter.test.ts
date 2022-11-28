@@ -2,11 +2,11 @@ import request from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import app from "../app.js";
-import User from "../../database/models/User.js";
-import connectDatabase from "../../database/index.js";
-import type { RegisterData, UserCredentials } from "../types/userTypes.js";
-import routes from "./routes.js";
+import app from "../../app.js";
+import User from "../../../database/models/User.js";
+import connectDatabase from "../../../database/index.js";
+import type { RegisterData, UserCredentials } from "../../types/userTypes.js";
+import routes from "../routes.js";
 
 let server: MongoMemoryServer;
 const { registerRoute, loginRoute, usersRoute } = routes;
@@ -124,8 +124,8 @@ describe("Given a POST /users/login endpoint", () => {
   });
 
   describe("When it receives an exitent user request with a username 'Leonidas' with a wrong password 'ups'", () => {
-    test("Then it should respond with a code status 400", async () => {
-      const expectedStatus = 400;
+    test("Then it should respond with a code status 401", async () => {
+      const expectedStatus = 401;
       const wrognUserLogin: UserCredentials = {
         username: "Leonidas",
         password: "ups",
@@ -154,8 +154,8 @@ describe("Given a POST /users/login endpoint", () => {
   });
 
   describe("When it receives an empty request", () => {
-    test("Then it should respond with a code status 400", async () => {
-      const expectedStatus = 400;
+    test("Then it should respond with a code status 401", async () => {
+      const expectedStatus = 401;
       const emptyData: UserCredentials = {
         username: "",
         password: "",

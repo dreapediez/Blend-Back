@@ -1,7 +1,10 @@
 import type { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import CustomError from "../../../CustomError/CustomError";
+import CustomError from "../../../CustomError/CustomError.js";
+import environments from "../../../loadEnvironments.js";
 import type { CustomRequest, UserTokenPayload } from "../../types/userTypes";
+
+const { secret } = environments;
 
 export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
@@ -18,9 +21,10 @@ export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
     }
 
     const token = authHeader.replace(/^Bearer \s*/, "");
+
     const user: UserTokenPayload = jwt.verify(
       token,
-      process.env.JWT_SECRET
+      secret
     ) as UserTokenPayload;
 
     req.userId = user.id;

@@ -2,9 +2,10 @@ import "../loadEnvironments.js";
 import cors from "cors";
 import express from "express";
 import morgan from "morgan";
-import usersRouter from "./routers/usersRouter.js";
 import allowedOrigins from "./allowedOrigins/allowedOrigins.js";
 import { generalError } from "./middlewares/errors/errors.js";
+import usersRouter from "./routers/usersRouter/usersRouter.js";
+import calendarsRouter from "./routers/calendarsRouter/calendarsRouter.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
 );
 
 app.use("/users", usersRouter);
+app.use("/calendars", calendarsRouter);
 
 app.get("/", (req, res, next) => {
   res.json({

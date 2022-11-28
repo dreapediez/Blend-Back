@@ -1,15 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../../database/models/User.js";
-import CustomError from "../../CustomError/CustomError.js";
+import type { MongooseError } from "mongoose";
 import type {
   RegisterData,
   UserCredentials,
   UserTokenPayload,
-} from "../types/userTypes.js";
-import type { MongooseError } from "mongoose";
-import environments from "../../loadEnvironments.js";
+} from "../../types/userTypes";
+import User from "../../../database/models/User.js";
+import CustomError from "../../../CustomError/CustomError.js";
+import environments from "../../../loadEnvironments.js";
 
 export const registerUser = async (
   req: Request,
@@ -79,9 +79,7 @@ export const loginUser = async (
       username,
     };
 
-    const token = jwt.sign(tokenPayload, environments.secret, {
-      expiresIn: "2d",
-    });
+    const token = jwt.sign(tokenPayload, environments.secret);
 
     res.status(200).json({ accessToken: token });
   } catch (error: unknown) {
