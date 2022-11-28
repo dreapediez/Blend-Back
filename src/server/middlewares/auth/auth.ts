@@ -7,17 +7,7 @@ export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.header("Authorization");
 
-    if (!authHeader) {
-      const error = new CustomError(
-        "Authorization header missing",
-        401,
-        "Missing token"
-      );
-      next(error);
-      return;
-    }
-
-    if (!authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       const error = new CustomError(
         "Authorization header missing",
         401,
