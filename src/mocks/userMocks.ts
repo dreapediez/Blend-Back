@@ -17,3 +17,6 @@ export const userMockCredentials = {
   email: "leo@gmail.com",
   id: "ñasokdfjdsñlk",
 };
+
+export const mockToken =
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNzE0N2E3ZDgzNzlkOTUzNzVjNTE2ZCIsInVzZXJuYW1lIjoicGFjbyIsImlhdCI6MTY2ODQ0OTEwNCwiZXhwIjoxNjY4NjIxOTA0fQ.0evbXb4KnA1Ojdehw52UQUV4nHEW5nvPr7OHUqDKtqo";
