@@ -14,11 +14,11 @@ export const generalError = (
   next: NextFunction
 ) => {
   if (error instanceof ValidationError) {
-    const schemErrors = error.details.body.map(
-      (schemError) => schemError.message
+    const schemaErrors = error.details.body.map(
+      (schemaError) => schemaError.message
     );
-    error.message = schemErrors.join(", ");
-    error.publicMessage = schemErrors.join(", ");
+    error.message = schemaErrors.join(", ");
+    error.publicMessage = schemaErrors.join(`\n`);
   }
 
   const statusCode = error.statusCode ?? 500;
