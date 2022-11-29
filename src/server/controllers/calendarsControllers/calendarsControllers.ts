@@ -11,14 +11,18 @@ export const getCalendar = async (
   const { userId } = req;
 
   try {
-    const calendars = await Calendar.findOne({ userId });
+    const calendar = await Calendar.findOne({ userId });
 
-    if (!calendars) {
-      res.status(204).json({ message: "No calendar found." });
-      return;
+    if (!calendar) {
+      const error = new CustomError(
+        "No calendar found",
+        204,
+        "Sorry, but there is not a calendar by that id"
+      );
+      next(error);
     }
 
-    res.status(200).json({ calendars });
+    res.status(200).json({ calendar });
   } catch (error: unknown) {
     const customError = new CustomError(
       (error as Error).message,
