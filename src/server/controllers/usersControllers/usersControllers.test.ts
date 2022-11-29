@@ -1,15 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import CustomError from "../../CustomError/CustomError.js";
+import CustomError from "../../../CustomError/CustomError.js";
 import {
   userMock,
   userMockCredentials,
   userMockWithId,
-} from "../../mocks/userMocks.js";
-import User from "../../database/models/User.js";
+} from "../../../mocks/userMocks.js";
+import User from "../../../database/models/User.js";
 import { loginUser, registerUser } from "./usersControllers.js";
-import environments from "../../loadEnvironments.js";
+import environments from "../../../loadEnvironments.js";
 
 beforeEach(() => {
   jest.clearAllMocks();

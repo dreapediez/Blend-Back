@@ -16,12 +16,6 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  avatar: {
-    type: String,
-  },
-  avatarBackup: {
-    type: String,
-  },
   createdAt: {
     type: Number,
     default: Date.now(),

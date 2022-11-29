@@ -59,6 +59,29 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzN2NjYmQ3MTc4M2QxZDg2M2UxZTlhMCIsInVzZXJuYW1lIjoiTGVvbmlkYXMiLCJpYXQiOjE2Njk2NjQxNjB9.Ogep41VvW1e7gu9KvUbdOPCB2Enzyv09phFHbERDyHI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}calendars/calendar",
+              "host": ["{{base_url}}calendars"],
+              "path": ["calendar"]
+            }
+          },
+          "response": []
         }
       ]
     }
