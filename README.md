@@ -1,4 +1,4 @@
-# **List of public enpoints**:
+# **List of public endpoints**:
 
 ## 1. ENDPOINTS USERS:
 

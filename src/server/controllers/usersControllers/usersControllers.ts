@@ -27,7 +27,14 @@ export const registerUser = async (
       email,
     });
 
-    res.status(201).json({ user: { id: newUser._id, username, email } });
+    const tokenPayload: UserTokenPayload = {
+      id: newUser._id.toString(),
+      username,
+    };
+
+    const token = jwt.sign(tokenPayload, environments.secret);
+
+    res.status(201).json({ accessToken: token });
   } catch (error: unknown) {
     if ((error as MongooseError).message.includes("duplicate key")) {
       const customError = new CustomError(
