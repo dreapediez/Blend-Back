@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import type { UserCredentials } from "../server/types/userTypes";
 
 export const userMock: UserCredentials = {
@@ -15,7 +16,7 @@ export const userMockCredentials = {
   username: "leo",
   password: "leo123",
   email: "leo@gmail.com",
-  id: "ñasokdfjdsñlk",
+  _id: new Types.ObjectId(),
 };
 
 export const mockToken =
