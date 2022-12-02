@@ -3,7 +3,7 @@ import type { Types } from "mongoose";
 export interface CalendarStructure {
   userId: Types.ObjectId;
   isActive: boolean;
-  createdAt: string;
+  createdAt: number;
   windows: WindowStructure[];
 }
 
@@ -19,11 +19,14 @@ export interface WindowStructure {
 }
 
 export interface PostStructure {
-  answer1: string;
-  answer2: string;
-  answer3: string;
-  answer4: string;
+  userId: Types.ObjectId;
+  day: number;
+  title: string;
+  answer1?: string;
+  answer2?: string;
+  answer3?: string;
+  answer4?: string;
   image: string;
   imageBackup: string;
-  createdAt: string;
+  createdAt: number;
 }
