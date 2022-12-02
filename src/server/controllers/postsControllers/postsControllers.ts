@@ -1,5 +1,4 @@
 import type { NextFunction, Response } from "express";
-import { Types } from "mongoose";
 import CustomError from "../../../CustomError/CustomError.js";
 import Post from "../../../database/models/Post.js";
 import type { CustomRequest } from "../../types/userTypes.js";
@@ -12,7 +11,7 @@ export const getPost = async (
   const { userId } = req;
 
   try {
-    const post = await Post.findOne({ userId: new Types.ObjectId(userId) });
+    const post = await Post.findOne({ userId });
 
     if (!post) {
       const error = new CustomError(
