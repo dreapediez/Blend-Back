@@ -5,7 +5,7 @@ import morgan from "morgan";
 import allowedOrigins from "./allowedOrigins/allowedOrigins.js";
 import { generalError } from "./middlewares/errors/errors.js";
 import usersRouter from "./routers/usersRouter/usersRouter.js";
-import calendarsRouter from "./routers/calendarsRouter/calendarsRouter.js";
+import postsRouter from "./routers/postsRouter/postsRouter.js";
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(
 );
 
 app.use("/users", usersRouter);
-app.use("/calendars", calendarsRouter);
+app.use("/posts", postsRouter);
 
 app.get("/", (req, res, next) => {
   res.json({

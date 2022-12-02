@@ -1,9 +1,9 @@
-import Calendar from "../../../database/models/Calendar";
-import { calendarMock } from "../../../mocks/calendarMocks";
-import { getCalendar } from "./calendarsControllers";
+import { postMock } from "../../../mocks/calendarMocks";
+import { getPost } from "./postsControllers";
 import type { NextFunction, Response } from "express";
 import type { CustomRequest } from "../../types/userTypes";
 import CustomError from "../../../CustomError/CustomError";
+import Post from "../../../database/models/Post";
 
 const res: Partial<Response> = {
   status: jest.fn().mockReturnThis(),
@@ -12,42 +12,42 @@ const res: Partial<Response> = {
 
 const next = jest.fn().mockReturnThis();
 
-describe("Given a getCalendar Controller", () => {
-  describe("When its rendered with a user id and their windows", () => {
+describe("Given a getPost Controller", () => {
+  describe("When its rendered with a user id and their post", () => {
     test("Then it should call the response method status with a 200, and the json method", async () => {
       const expectedStatus = 200;
       const req: Partial<CustomRequest> = {
-        userId: calendarMock.userId.toString(),
+        userId: postMock.userId.toString(),
       };
 
-      Calendar.findOne = jest.fn().mockReturnValue(calendarMock);
+      Post.findOne = jest.fn().mockReturnValue(postMock);
 
-      await getCalendar(
+      await getPost(
         req as CustomRequest,
         res as Response,
         next as NextFunction
       );
 
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
-      expect(res.json).toHaveBeenCalledWith({ calendar: calendarMock });
+      expect(res.json).toHaveBeenCalledWith({ post: postMock });
     });
   });
 
   describe("When its rendered without a user id", () => {
-    test("Then it should return a custom error with status 204 and the message 'No calendar found'", async () => {
+    test("Then it should return a custom error with status 204 and the message 'No post found'", async () => {
       const req: Partial<CustomRequest> = {
         userId: "",
       };
 
-      Calendar.findOne = jest.fn().mockReturnValue(null);
+      Post.findOne = jest.fn().mockReturnValue(null);
 
       const expectedError = new CustomError(
-        "No calendar found",
+        "No post found",
         204,
-        "Sorry, but there is not a calendar by that id"
+        "Sorry, but there is not a post by that id"
       );
 
-      await getCalendar(
+      await getPost(
         req as CustomRequest,
         res as Response,
         next as NextFunction
@@ -58,7 +58,7 @@ describe("Given a getCalendar Controller", () => {
   });
 
   describe("When it receives a response with an error", () => {
-    test("Then it should return a next error with status 500 and the message 'No calendar found'", async () => {
+    test("Then it should return a next error with status 500 and the message 'No post found'", async () => {
       const customError = new CustomError(
         "",
         500,
@@ -66,12 +66,12 @@ describe("Given a getCalendar Controller", () => {
       );
 
       const req: Partial<CustomRequest> = {
-        userId: calendarMock.userId.toString(),
+        userId: postMock.userId.toString(),
       };
 
-      Calendar.findOne = jest.fn().mockRejectedValue(Error(""));
+      Post.findOne = jest.fn().mockRejectedValue(Error(""));
 
-      await getCalendar(
+      await getPost(
         req as CustomRequest,
         res as Response,
         next as NextFunction

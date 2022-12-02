@@ -3,8 +3,8 @@ const routes = {
   usersRoute: "/users",
   loginRoute: "/login",
 
-  calendarsRouter: "/calendars",
-  getCalendarRouter: "/calendar",
+  postsRouter: "/posts",
+  getPostRouter: "/post",
 };
 
 export default routes;

@@ -23,7 +23,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\",\r\n    \"email\": \"\"\r\n}",
+              "raw": "{\r\n    \"username\": \"Gm\",\r\n    \"password\": \"123456\",\r\n    \"email\": \"gui@xem\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -45,7 +45,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\"\r\n}",
+              "raw": "{\r\n    \"username\": \"Lemon\",\r\n    \"password\": \"12345678\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -61,14 +61,14 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "New post",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzN2NjYmQ3MTc4M2QxZDg2M2UxZTlhMCIsInVzZXJuYW1lIjoiTGVvbmlkYXMiLCJpYXQiOjE2Njk2NjQxNjB9.Ogep41VvW1e7gu9KvUbdOPCB2Enzyv09phFHbERDyHI",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzODQ5ZDY0OGRjYWUyODU1MDBiYWM3YyIsInVzZXJuYW1lIjoiTGVtb24iLCJpYXQiOjE2Njk5NzI0MjV9.sBbZi3agkftm05SKPRVW67CWY8xxV-thOY66TviEtR0",
                   "type": "string"
                 }
               ]
@@ -76,9 +76,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}calendars/calendar",
-              "host": ["{{base_url}}calendars"],
-              "path": ["calendar"]
+              "raw": "{{base_url}}posts/post",
+              "host": ["{{base_url}}posts"],
+              "path": ["post"]
             }
           },
           "response": []

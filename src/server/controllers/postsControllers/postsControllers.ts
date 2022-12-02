@@ -1,9 +1,9 @@
 import type { NextFunction, Response } from "express";
 import CustomError from "../../../CustomError/CustomError.js";
-import Calendar from "../../../database/models/Calendar.js";
+import Post from "../../../database/models/Post.js";
 import type { CustomRequest } from "../../types/userTypes.js";
 
-export const getCalendar = async (
+export const getPost = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -11,18 +11,18 @@ export const getCalendar = async (
   const { userId } = req;
 
   try {
-    const calendar = await Calendar.findOne({ userId });
+    const post = await Post.findOne({ userId });
 
-    if (!calendar) {
+    if (!post) {
       const error = new CustomError(
-        "No calendar found",
+        "No post found",
         204,
-        "Sorry, but there is not a calendar by that id"
+        "Sorry, but there is not a post by that id"
       );
       next(error);
     }
 
-    res.status(200).json({ calendar });
+    res.status(200).json({ post });
   } catch (error: unknown) {
     const customError = new CustomError(
       (error as Error).message,
