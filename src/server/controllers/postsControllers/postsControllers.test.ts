@@ -1,5 +1,5 @@
 import { postMock, postsMock } from "../../../mocks/calendarMocks";
-import { getAllPosts, getPost } from "./postsControllers";
+import { deletePostById, getAllPosts, getPostById } from "./postsControllers";
 import type { NextFunction, Response } from "express";
 import CustomError from "../../../CustomError/CustomError";
 import Post from "../../../database/models/Post";
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 const next = jest.fn();
 
-describe("Given a getPost Controller", () => {
+describe("Given a getPostById Controller", () => {
   describe("When its rendered with a post id", () => {
     test("Then it should call the response method status with a 200, and the json method", async () => {
       const expectedStatus = 200;
@@ -27,7 +27,7 @@ describe("Given a getPost Controller", () => {
 
       Post.findOne = jest.fn().mockReturnValue(postMock);
 
-      await getPost(
+      await getPostById(
         req as PostCustomRequest,
         res as Response,
         next as NextFunction
@@ -52,7 +52,7 @@ describe("Given a getPost Controller", () => {
         "Sorry, but there is not a post by that id"
       );
 
-      await getPost(
+      await getPostById(
         req as PostCustomRequest,
         res as Response,
         next as NextFunction
@@ -76,7 +76,7 @@ describe("Given a getPost Controller", () => {
 
       Post.findOne = jest.fn().mockRejectedValue(Error(""));
 
-      await getPost(
+      await getPostById(
         req as PostCustomRequest,
         res as Response,
         next as NextFunction
@@ -148,6 +148,75 @@ describe("Given a getAllPosts Controller", () => {
 
       await getAllPosts(
         req as CustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(customError);
+    });
+  });
+});
+
+describe("Given a deletePostById Controller", () => {
+  describe("When it receives a response with an id to remove", () => {
+    test("Then it should call the response method status with a 200, and the json method", async () => {
+      const expectedStatus = 200;
+      const req: Partial<PostCustomRequest> = {
+        params: { postId: "6389bb6ddbc8db42cee9ffab" },
+      };
+
+      Post.findByIdAndDelete = jest.fn().mockReturnValue(postMock);
+
+      await deletePostById(
+        req as PostCustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
+  });
+
+  describe("When it receives a response with an unexistent id to remove", () => {
+    test("Then it should return a custom error with status 204 and the message 'No post found'", async () => {
+      const req: Partial<PostCustomRequest> = {
+        params: { postId: "" },
+      };
+
+      Post.findByIdAndDelete = jest.fn().mockReturnValue(null);
+
+      const expectedError = new CustomError(
+        "No post found",
+        204,
+        "Sorry, but there is not a post by that id"
+      );
+
+      await deletePostById(
+        req as PostCustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("When it receives a response with an error", () => {
+    test("Then it should return a next error with status 500 and the message 'No post found'", async () => {
+      const customError = new CustomError(
+        "",
+        500,
+        "Database doesn't work, try again later"
+      );
+
+      const req: Partial<PostCustomRequest> = {
+        params: { postId: "6389bb6ddbc8db42cee9ffac" },
+      };
+
+      Post.findByIdAndDelete = jest.fn().mockRejectedValue(Error(""));
+
+      await deletePostById(
+        req as PostCustomRequest,
         res as Response,
         next as NextFunction
       );
