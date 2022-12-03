@@ -1,4 +1,5 @@
 import type { Types } from "mongoose";
+import type { Request } from "express";
 
 export interface CalendarStructure {
   userId: Types.ObjectId;
@@ -29,4 +30,10 @@ export interface PostStructure {
   image: string;
   imageBackup: string;
   createdAt: number;
+}
+
+export interface PostCustomRequest extends Request {
+  params: {
+    postId: string;
+  };
 }
