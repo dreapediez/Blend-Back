@@ -4,7 +4,7 @@ const routes = {
   loginRoute: "/login",
 
   postsRouter: "/posts",
-  getPostRouter: "/post",
+  getPostRouter: "/post/:postId",
 };
 
 export default routes;
