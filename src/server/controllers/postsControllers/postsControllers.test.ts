@@ -1,5 +1,5 @@
 import { postMock, postsMock } from "../../../mocks/calendarMocks";
-import { getAllPosts, getPost } from "./postsControllers";
+import { getAllPosts, getPostById } from "./postsControllers";
 import type { NextFunction, Response } from "express";
 import CustomError from "../../../CustomError/CustomError";
 import Post from "../../../database/models/Post";
@@ -17,7 +17,7 @@ beforeEach(() => {
 
 const next = jest.fn();
 
-describe("Given a getPost Controller", () => {
+describe("Given a getPostById Controller", () => {
   describe("When its rendered with a post id", () => {
     test("Then it should call the response method status with a 200, and the json method", async () => {
       const expectedStatus = 200;
@@ -27,7 +27,7 @@ describe("Given a getPost Controller", () => {
 
       Post.findOne = jest.fn().mockReturnValue(postMock);
 
-      await getPost(
+      await getPostById(
         req as PostCustomRequest,
         res as Response,
         next as NextFunction
@@ -52,7 +52,7 @@ describe("Given a getPost Controller", () => {
         "Sorry, but there is not a post by that id"
       );
 
-      await getPost(
+      await getPostById(
         req as PostCustomRequest,
         res as Response,
         next as NextFunction
@@ -76,7 +76,7 @@ describe("Given a getPost Controller", () => {
 
       Post.findOne = jest.fn().mockRejectedValue(Error(""));
 
-      await getPost(
+      await getPostById(
         req as PostCustomRequest,
         res as Response,
         next as NextFunction

@@ -3,9 +3,10 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 import allowedOrigins from "./allowedOrigins/allowedOrigins.js";
-import { generalError } from "./middlewares/errors/errors.js";
+import { generalError, notFoundEndpoint } from "./middlewares/errors/errors.js";
 import usersRouter from "./routers/usersRouter/usersRouter.js";
 import postsRouter from "./routers/postsRouter/postsRouter.js";
+import { auth } from "./middlewares/auth/auth.js";
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(
 );
 
 app.use("/users", usersRouter);
-app.use("/posts", postsRouter);
+app.use("/posts", auth, postsRouter);
 
 app.get("/", (req, res, next) => {
   res.json({
@@ -31,6 +32,7 @@ app.get("/", (req, res, next) => {
   next();
 });
 
+app.use(notFoundEndpoint);
 app.use(generalError);
 
 export default app;

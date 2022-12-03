@@ -5,6 +5,7 @@ const routes = {
 
   postsRouter: "/posts",
   getPostRouter: "/post/:postId",
+  deletePost: "/delete/:postId",
 };
 
 export default routes;

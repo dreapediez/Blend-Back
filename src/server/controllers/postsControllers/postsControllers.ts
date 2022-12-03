@@ -4,7 +4,7 @@ import Post from "../../../database/models/Post.js";
 import type { PostCustomRequest } from "../../types/calendarTypes.js";
 import type { CustomRequest } from "../../types/userTypes.js";
 
-export const getPost = async (
+export const getPostById = async (
   req: PostCustomRequest,
   res: Response,
   next: NextFunction
@@ -59,6 +59,37 @@ export const getAllPosts = async (
       (error as Error).message,
       500,
       "Database doesn't work, try again later"
+    );
+    next(customError);
+  }
+};
+
+export const deletePostById = async (
+  req: PostCustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await Post.findByIdAndDelete(postId);
+
+    if (!post) {
+      const error = new CustomError(
+        "No post found",
+        204,
+        "Sorry, but there is not a post by that id"
+      );
+      next(error);
+    }
+
+    res.status(200).json(postId);
+  } catch (error: unknown) {
+    const customError = new CustomError(
+      (error as Error).message,
+      (error as CustomError).statusCode ?? 500,
+      (error as CustomError).publicMessage ||
+        "Database doesn't work, try again later."
     );
     next(customError);
   }
