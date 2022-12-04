@@ -83,7 +83,7 @@ export const deletePostById = async (
       next(error);
     }
 
-    res.status(200).json(postId);
+    res.status(200).json(post);
   } catch (error: unknown) {
     const customError = new CustomError(
       (error as Error).message,
