@@ -1,9 +1,17 @@
 import { postMock, postsMock } from "../../../mocks/calendarMocks";
-import { deletePostById, getAllPosts, getPostById } from "./postsControllers";
+import {
+  createNewPost,
+  deletePostById,
+  getAllPosts,
+  getPostById,
+} from "./postsControllers";
 import type { NextFunction, Response } from "express";
 import CustomError from "../../../CustomError/CustomError";
 import Post from "../../../database/models/Post";
-import type { PostCustomRequest } from "../../types/calendarTypes";
+import type {
+  PostCreateCustomRequest,
+  PostCustomRequest,
+} from "../../types/calendarTypes";
 import type { CustomRequest } from "../../types/userTypes";
 
 const res: Partial<Response> = {
@@ -11,7 +19,7 @@ const res: Partial<Response> = {
   json: jest.fn(),
 };
 
-beforeEach(() => {
+afterEach(() => {
   jest.clearAllMocks();
 });
 
@@ -222,6 +230,73 @@ describe("Given a deletePostById Controller", () => {
       );
 
       expect(next).toHaveBeenCalledWith(customError);
+    });
+  });
+});
+
+describe("Given a createPost Controller", () => {
+  const req: Partial<PostCreateCustomRequest> = {
+    userId: "63849d648dcae285500bac7c",
+    body: postMock,
+  };
+  describe("When it receives a response to create a new post with a day parameter that alreay exists", () => {
+    test("Then it should call the response method status with a 404, and the json method", async () => {
+      const customError = new CustomError(
+        "Post already created",
+        409,
+        "Post already created"
+      );
+
+      Post.findOne = jest.fn().mockReturnValue(postMock);
+
+      await createNewPost(
+        req as PostCreateCustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(customError);
+    });
+  });
+
+  describe("Given a createPost Controller", () => {
+    describe("When it receives a response to create a new post", () => {
+      test("Then it should call the response method status with a 201, and the json method", async () => {
+        const expectedStatus = 201;
+
+        Post.findOne = jest.fn().mockReturnValue(null);
+        Post.create = jest.fn().mockReturnValue(postMock);
+
+        await createNewPost(
+          req as PostCreateCustomRequest,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(expectedStatus);
+        expect(res.json).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe("When it receives a response to create a new post and it has an error", () => {
+    test("Then it should call the response method status with a 400, and the json method", async () => {
+      const generalError = new CustomError(
+        "",
+        400,
+        "Error creating the new post"
+      );
+
+      Post.findOne = jest.fn().mockReturnValue(null);
+      Post.create = jest.fn().mockRejectedValue(new Error());
+
+      await createNewPost(
+        req as PostCreateCustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(generalError);
     });
   });
 });

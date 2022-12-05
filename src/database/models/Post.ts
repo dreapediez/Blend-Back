@@ -1,3 +1,4 @@
+import type { InferSchemaType } from "mongoose";
 import { model, Schema } from "mongoose";
 
 const PostSchema = new Schema({
@@ -6,21 +7,27 @@ const PostSchema = new Schema({
   },
   day: {
     type: Number,
+    required: true,
   },
   title: {
     type: String,
+    required: true,
   },
   answer1: {
     type: String,
+    required: true,
   },
   answer2: {
     type: String,
+    required: true,
   },
   answer3: {
     type: String,
+    required: true,
   },
   answer4: {
     type: String,
+    required: true,
   },
   image: {
     type: String,
@@ -36,5 +43,7 @@ const PostSchema = new Schema({
 });
 
 const Post = model("Post", PostSchema, "posts");
+
+export type PostSchemaStructure = InferSchemaType<typeof PostSchema>;
 
 export default Post;
