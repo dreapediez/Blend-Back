@@ -1,3 +1,4 @@
+import "../../../loadEnvironments.js";
 import type { Response } from "express";
 import CustomError from "../../../CustomError/CustomError";
 

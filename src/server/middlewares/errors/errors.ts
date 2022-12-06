@@ -1,4 +1,4 @@
-import "../loadEnvironments.js";
+import "../../../loadEnvironments.js";
 import type { NextFunction, Request, Response } from "express";
 import { ValidationError } from "express-validation";
 import type CustomError from "../../../CustomError/CustomError";
