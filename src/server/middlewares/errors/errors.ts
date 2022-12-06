@@ -1,8 +1,8 @@
+import "../loadEnvironments.js";
 import type { NextFunction, Request, Response } from "express";
 import { ValidationError } from "express-validation";
 import type CustomError from "../../../CustomError/CustomError";
 import debugCreator from "debug";
-import "../loadEnvironments.js";
 import chalk from "chalk";
 
 const debug = debugCreator("users:server:root");
