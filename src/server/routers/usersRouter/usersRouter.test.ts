@@ -1,3 +1,4 @@
+import "../../../loadEnvironments.js";
 import request from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
